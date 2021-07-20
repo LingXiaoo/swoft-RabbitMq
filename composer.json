@@ -1,0 +1,24 @@
+{
+  "name": "lingxiao/swoft-RabbitMq",
+  "type": "library",
+  "keywords": [
+    "swoole",
+    "swoft",
+    "swoft-component"
+  ],
+  "description": "swoft-RabbitMq component for swoft framework",
+  "license": "Apache-2.0",
+  "require": {
+    "php": ">7.1",
+    "swoft/framework": "~2.0.0",
+    "php-amqplib/php-amqplib": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lingxiao\\Swoft\\RabbitMq\\": "src/"
+    },
+    "files": [
+      "src/Helper/Functions.php"
+    ]
+  }
+}
