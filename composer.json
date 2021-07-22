@@ -11,7 +11,8 @@
   "require": {
     "php": ">7.1",
     "swoft/framework": "~2.0.0",
-    "php-amqplib/php-amqplib": "^3.0"
+    "php-amqplib/php-amqplib": "^3.0",
+    "swoft/connection-pool": "~2.0.0"
   },
   "autoload": {
     "psr-4": {
@@ -20,5 +21,20 @@
     "files": [
       "src/Helper/Functions.php"
     ]
+  },
+  "require-dev": {
+    "swoft/swoole-ide-helper": "dev-master",
+    "phpunit/phpunit": "^7.5"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Lingxiao\\Swoft\\RabbitMq\\Test\\Unit\\": "test/unit/",
+      "Lingxiao\\Swoft\\RabbitMq\\Test\\Testing\\": "test/testing/",
+      "SwoftTest\\Unit\\": "vendor/swoft/framework/test/unit/",
+      "SwoftTest\\Testing\\": "vendor/swoft/framework/test/testing/"
+    }
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit -c phpunit.xml"
   }
 }
