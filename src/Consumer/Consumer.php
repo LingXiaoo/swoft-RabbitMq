@@ -4,5 +4,7 @@ namespace Lingxiao\Swoft\RabbitMq\Consumer;
 
 class Consumer
 {
-
+    public function run(){
+        
+    }
 }

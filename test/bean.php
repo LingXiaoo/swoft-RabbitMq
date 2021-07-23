@@ -11,17 +11,21 @@
 namespace Lingxiao\Swoft\RabbitMq\RabbitMq;
 
 return [
+    'config' => [
+        'path' => __DIR__ . '/config',
+    ],
     'rabbit'               => [
         'class'         => \Lingxiao\Swoft\RabbitMq\RabbitMq::class,
         'host'          => '127.0.0.1',
         'port'          => 5672,
         'user'          => '',
         'password'      => '',
-        'vhost'         => '/',
     ],
     'rabbit.pool'          => [
         'class'       => \Lingxiao\Swoft\RabbitMq\Pool::class,
-        'rabbitMq'     => \bean('rabbit'),
+        'rabbitMq'    => \bean('rabbit'),
+        'vhost'       => '/test',
+        "queueLists"  => config("rabbit.test"),
         'minActive'   => 10,
         'maxActive'   => 20,
         'maxWait'     => 0,

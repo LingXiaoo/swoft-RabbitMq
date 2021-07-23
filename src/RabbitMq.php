@@ -10,14 +10,34 @@ use Swoft\Bean\BeanFactory;
  */
 class RabbitMq
 {
-    private $host = '127.0.0.1';
-    private $port = '5672';
-    private $user = '';
-    private $password = '';
-    private $vhost = '/';
+    /**
+     * @var string
+     */
+    protected $host = '127.0.0.1';
+
+    /**
+     * @var int
+     */
+    protected $port = 5672;
+
+    /**
+     * @var string
+     */
+    protected $user = '';
+
+    /**
+     * @var string
+     */
+    protected $password = '';
+
+    /**
+     * @var array
+     */
+    protected $queueLists = [];
 
     public function createConnection(Pool $pool){
         //调用连接类
+        /** @var Connection $connection */
         $connection = BeanFactory::getBean(Connection::class);
         $connection->initialize($pool,$this);
         $connection->create();
@@ -30,6 +50,14 @@ class RabbitMq
     public function getVhost(): string
     {
         return $this->vhost;
+    }
+
+    /**
+     * @param string $vhost
+     */
+    public function setVhost(string $vhost): void
+    {
+        $this->vhost = $vhost;
     }
 
     /**
@@ -62,6 +90,22 @@ class RabbitMq
     public function getHost(): string
     {
         return $this->host;
+    }
+
+    /**
+     * @return array
+     */
+    public function getQueueLists(): array
+    {
+        return $this->queueLists;
+    }
+
+    /**
+     * @param array $queueLists
+     */
+    public function setQueueLists(array $queueLists): void
+    {
+        $this->queueLists = $queueLists;
     }
 
 }

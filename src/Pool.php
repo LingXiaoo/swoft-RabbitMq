@@ -25,11 +25,25 @@ class Pool extends AbstractPool
     protected $rabbitMq;
 
     /**
+     * @var string
+     */
+    protected $vhost = '/';
+
+    /**
+     * @var array
+     */
+    protected $queueLists = [];
+
+
+    /**
      * @return ConnectionInterface
      * @throws RabbitException
      */
     public function createConnection(): ConnectionInterface
     {
+        $this->rabbitMq->setVhost($this->getVhost());
+        $this->rabbitMq->setVhost($this->getVhost());
+
         return $this->rabbitMq->createConnection($this);
     }
 
@@ -74,5 +88,37 @@ class Pool extends AbstractPool
     public function getRabbitMq(): RabbitMq
     {
         return $this->rabbitMq;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVhost(): string
+    {
+        return $this->vhost;
+    }
+
+    /**
+     * @param string $vhost
+     */
+    public function setVhost(string $vhost): void
+    {
+        $this->vhost = $vhost;
+    }
+
+    /**
+     * @return array
+     */
+    public function getQueueLists(): array
+    {
+        return $this->queueLists;
+    }
+
+    /**
+     * @param array $queueLists
+     */
+    public function setQueueLists(array $queueLists): void
+    {
+        $this->queueLists = $queueLists;
     }
 }

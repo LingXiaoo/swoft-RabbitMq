@@ -8,6 +8,7 @@
 namespace Lingxiao\Swoft\RabbitMq\Test\Unit;
 
 
+use Lingxiao\Swoft\RabbitMq\Producer\MqProducer;
 use Lingxiao\Swoft\RabbitMq\RabbitMq;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -21,9 +22,7 @@ class RabbitMqTest extends TestCase
      */
     public function testConsumer()
     {
-        $RabbitMq = BeanFactory::getBean('rabbit.pool');
-        $channel = $RabbitMq->channel();
-        var_dump($channel);
+
     }
 
     /**
@@ -31,6 +30,12 @@ class RabbitMqTest extends TestCase
      */
     public function testProducer()
     {
-
+        $producer = BeanFactory::getBean(MqProducer::class);
+        $producer->setQueue('queue_crm_order');
+        $producer->setMessage('Hello World1');
+        $producer->setMessage('Hello World1');
+//
+        $producer->push();
+        var_dump('success！');
     }
 }
