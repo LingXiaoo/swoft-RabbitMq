@@ -3,7 +3,9 @@
 namespace Lingxiao\Swoft\RabbitMq\Consumer;
 
 use Lingxiao\Swoft\RabbitMq\Channel\BaseChannel;
+use PhpAmqpLib\Message\AMQPMessage;
 use Swoft\Bean\Annotation\Mapping\Bean;
+use Swoft\Log\Helper\Log;
 
 /**
  * Class MqProducer
@@ -14,18 +16,25 @@ class MqConsumer extends BaseChannel implements ConsumerInterface
 {
     public function run(){
         $autoAck = $this->rabbit->getAutoAck();
-        $this->AmqChannel->basic_consume($this->rabbit->getQueueName(), '', false, $autoAck, false, false, function($msg) use ($autoAck){
-            $param = $msg->body;
-            var_dump($param);
-//            $this->doProcess($param);
+        $this->AmqChannel->basic_consume($this->rabbit->getQueueName(), '', false, $autoAck, false, false, function($message) use ($autoAck){
+            $re = $this->handle($message);
             if(!$autoAck){
-                //手动ack应答
-                $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
+                if ($re){
+                    $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
+                }
             }
         });
-        //监听消息
         while(count($this->AmqChannel->callbacks)){
             $this->AmqChannel->wait();
         }
+    }
+
+    /**
+     * @param AMQPMessage $message
+     */
+    public function handle(AMQPMessage $message) : bool
+    {
+        Log::info($message->getBody());
+        return true;
     }
 }

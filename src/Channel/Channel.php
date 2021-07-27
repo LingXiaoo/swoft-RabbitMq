@@ -149,7 +149,6 @@ class Channel
         $this->initChannel();
         $conf = $this->getQueueConf();
         $consumerClass = $conf['consumerClass'] ?? MqConsumer::class;
-        var_dump($consumerClass);
         $consumer = BeanFactory::getBean($consumerClass);
         $consumer->setAmqChannel($this->channel);
         $consumer->setRabbit($this);
