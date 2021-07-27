@@ -20,12 +20,11 @@ return [
         'port'          => 5672,
         'user'          => '',
         'password'      => '',
+        "queueLists"  => config("rabbit.queueLists"),
     ],
     'rabbit.pool'          => [
         'class'       => \Lingxiao\Swoft\RabbitMq\Pool::class,
         'rabbitMq'    => \bean('rabbit'),
-        'vhost'       => '/test',
-        "queueLists"  => config("rabbit.test"),
         'minActive'   => 10,
         'maxActive'   => 20,
         'maxWait'     => 0,

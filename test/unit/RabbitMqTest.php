@@ -7,9 +7,9 @@
 
 namespace Lingxiao\Swoft\RabbitMq\Test\Unit;
 
-
-use Lingxiao\Swoft\RabbitMq\Producer\MqProducer;
-use Lingxiao\Swoft\RabbitMq\RabbitMq;
+use Lingxiao\Swoft\RabbitMq\Channel\Channel;
+use Lingxiao\Swoft\RabbitMq\Consumer\ConsumerInterface;
+use Lingxiao\Swoft\RabbitMq\Producer\ProducerInterface;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Swoft\Bean\BeanFactory;
@@ -22,7 +22,13 @@ class RabbitMqTest extends TestCase
      */
     public function testConsumer()
     {
-
+        /** @var Channel $channel */
+        $channel = BeanFactory::getBean(Channel::class);
+        $channel->setQueue('test');
+        /** @var ConsumerInterface $consumer */
+        $consumer = $channel->consumer();
+        $consumer->run();
+        var_dump('success！');
     }
 
     /**
@@ -30,12 +36,15 @@ class RabbitMqTest extends TestCase
      */
     public function testProducer()
     {
-        $producer = BeanFactory::getBean(MqProducer::class);
-        $producer->setQueue('queue_crm_order');
+        /** @var Channel $channel */
+        $channel = BeanFactory::getBean(Channel::class);
+        $channel->setQueue('test');
+        /** @var ProducerInterface $producer */
+        $producer = $channel->producer();
         $producer->setMessage('Hello World1');
-        $producer->setMessage('Hello World1');
-//
+        $producer->setMessage('Hello World2');
         $producer->push();
         var_dump('success！');
+
     }
 }

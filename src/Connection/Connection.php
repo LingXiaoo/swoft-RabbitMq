@@ -30,6 +30,11 @@ class Connection extends AbstractConnection implements ConnectionInterface
     protected $rabbitMq;
 
     /**
+     * @var Pool
+     */
+    protected $pool;
+
+    /**
      * @param Pool    $pool
      * @param RabbitMq $rabbitMq
      */
@@ -131,6 +136,11 @@ class Connection extends AbstractConnection implements ConnectionInterface
     public function close(): void
     {
         $this->client->close();
+    }
+
+    public function closeAndRelease(){
+        $this->close();
+        $this->release();
     }
 
     /**

@@ -31,6 +31,11 @@ class RabbitMq
     protected $password = '';
 
     /**
+     * @var string
+     */
+    protected $vhost = '';
+
+    /**
      * @var array
      */
     protected $queueLists = [];

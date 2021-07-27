@@ -25,38 +25,18 @@ class Pool extends AbstractPool
     protected $rabbitMq;
 
     /**
-     * @var string
-     */
-    protected $vhost = '/';
-
-    /**
-     * @var array
-     */
-    protected $queueLists = [];
-
-
-    /**
      * @return ConnectionInterface
      * @throws RabbitException
      */
     public function createConnection(): ConnectionInterface
     {
-        $this->rabbitMq->setVhost($this->getVhost());
-        $this->rabbitMq->setVhost($this->getVhost());
-
         return $this->rabbitMq->createConnection($this);
     }
 
     /**
-     * call magic method
-     *
-     * @param string $name
-     * @param array  $arguments
-     *
-     * @return Connection
-     * @throws RabbitException
+     * @return Connection|ConnectionInterface
      */
-    public function __call(string $name, array $arguments)
+    public function connection()
     {
         try {
             /* @var ConnectionManager $conManager */
@@ -79,8 +59,44 @@ class Pool extends AbstractPool
             );
         }
 
-        return $connection->{$name}(...$arguments);
+        return $connection;
     }
+
+
+//    /**
+//     * call magic method
+//     *
+//     * @param string $name
+//     * @param array  $arguments
+//     *
+//     * @return Connection
+//     * @throws RabbitException
+//     */
+//    public function __call(string $name, array $arguments)
+//    {
+//        try {
+//            /* @var ConnectionManager $conManager */
+//            $conManager = BeanFactory::getBean(ConnectionManager::class);
+//
+//            $connection = $this->getConnection();
+//
+//            $connection->setRelease(true);
+//            $conManager->setConnection($connection);
+//        } catch (Throwable $e) {
+//            throw new RabbitException(
+//                sprintf('Pool error is %s file=%s line=%d', $e->getMessage(), $e->getFile(), $e->getLine())
+//            );
+//        }
+//
+//        // Not instanceof Connection
+//        if (!$connection instanceof Connection) {
+//            throw new RabbitException(
+//                sprintf('%s is not instanceof %s', get_class($connection), Connection::class)
+//            );
+//        }
+//
+//        return $connection->{$name}(...$arguments);
+//    }
 
     /**
      * @return RabbitMq
@@ -88,37 +104,5 @@ class Pool extends AbstractPool
     public function getRabbitMq(): RabbitMq
     {
         return $this->rabbitMq;
-    }
-
-    /**
-     * @return string
-     */
-    public function getVhost(): string
-    {
-        return $this->vhost;
-    }
-
-    /**
-     * @param string $vhost
-     */
-    public function setVhost(string $vhost): void
-    {
-        $this->vhost = $vhost;
-    }
-
-    /**
-     * @return array
-     */
-    public function getQueueLists(): array
-    {
-        return $this->queueLists;
-    }
-
-    /**
-     * @param array $queueLists
-     */
-    public function setQueueLists(array $queueLists): void
-    {
-        $this->queueLists = $queueLists;
     }
 }
