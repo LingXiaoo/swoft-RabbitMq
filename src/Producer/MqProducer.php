@@ -2,17 +2,17 @@
 
 namespace Lingxiao\Swoft\RabbitMq\Producer;
 
-use Lingxiao\Swoft\RabbitMq\Channel\BaseChannel;
 use Lingxiao\Swoft\RabbitMq\Exception\RabbitException;
 use PhpAmqpLib\Message\AMQPMessage;
 use Swoft\Bean\Annotation\Mapping\Bean;
+use Swoft\Log\Helper\Log;
 
 /**
  * Class MqProducer
  * @package Lingxiao\Swoft\RabbitMq\Producer
  * @Bean()
  */
-class MqProducer extends BaseChannel implements ProducerInterface
+class MqProducer extends BaseProducer implements ProducerInterface
 {
     /**
      * @param mixed $data
@@ -33,13 +33,22 @@ class MqProducer extends BaseChannel implements ProducerInterface
         if (empty($this->message)){
             throw new RabbitException('Message is empty!');
         }
-        foreach ($this->message as $msg){
-            //触发事件
-            var_dump($msg->getBody());
-            $this->AmqChannel->basic_publish($msg,$this->rabbit->getExchangeName(),$this->rabbit->getRouteKey());
-            //触发事件
+        try {
+            foreach ($this->message as $msg){
+                //触发事件
+                var_dump($msg->getBody());
+                Log::info('Rabbitmq Producer publish Message',[$msg]);
+                $this->AmqChannel->basic_publish($msg,$this->rabbit->getExchangeName(),$this->rabbit->getRouteKey());
+                //触发事件
+            }
+            //清空当前对象关闭通道
+            $this->rabbit->close();
+        }catch (\Throwable $exception){
+            Log::error('Rabbitmq Producer error',[$exception->getMessage(),$exception->getFile(),$exception->getLine()]);
+            //清空当前对象关闭通道
+            $this->rabbit->close();
+        } finally {
+            $this->rabbit->close();
         }
-        //清空当前对象关闭通道
-        $this->rabbit->close();
     }
 }

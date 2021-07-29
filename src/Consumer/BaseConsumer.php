@@ -1,14 +1,15 @@
 <?php
 
-namespace Lingxiao\Swoft\RabbitMq\Channel;
+namespace Lingxiao\Swoft\RabbitMq\Consumer;
 
+use Lingxiao\Swoft\RabbitMq\Channel\Channel;
 use PhpAmqpLib\Channel\AMQPChannel;
 
 /**
- * Class BaseChannel
+ * Class BaseConsumer
  * @package Lingxiao\Swoft\RabbitMq\Channel
  */
-class BaseChannel
+class BaseConsumer
 {
     /**
      * @var array
@@ -23,6 +24,19 @@ class BaseChannel
      * @var AMQPChannel
      */
     protected $AmqChannel;
+
+    /**
+     * @var ConsumerHandleInterface
+     */
+    protected $ConsumerHandle;
+
+    /**
+     * @param mixed $ConsumerHandle
+     */
+    public function setConsumerHandle($ConsumerHandle): void
+    {
+        $this->ConsumerHandle = $ConsumerHandle;
+    }
 
     /**
      * @param AMQPChannel $AmqChannel

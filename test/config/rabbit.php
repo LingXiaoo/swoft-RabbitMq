@@ -1,15 +1,16 @@
 <?php
+
 return [
     'queueLists' => [
         [
             'name' => 'test',
-            'vhost' => '/',
+            'vhost' => '/vhost',
             'exchangeName' => 'test', //交换机名称
             'queueName' => 'test',//队列名称
             'routeKey' => '',
-            'producerClass' => \Lingxiao\Swoft\RabbitMq\Producer\MqProducer::class,
-            'consumerClass' => \Lingxiao\Swoft\RabbitMq\Consumer\MqConsumer::class,
-            'autoAck' => true,
+            'producerClass' => \Lingxiao\Swoft\RabbitMq\Producer\MqProducer::class,//生产者
+            'consumerHandle' => \Lingxiao\Swoft\RabbitMq\Consumer\ConsumerHandle::class,//消费者处理类
+            'autoAck' => false,//是否自动应答
             'exChange' => [
                 'direct' => 'direct', //路由类型
                 'passive' => true, //是否检测同名队列

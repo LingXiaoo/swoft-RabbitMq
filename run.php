@@ -58,7 +58,7 @@ require PHPUNIT_COMPOSER_INSTALL;
 $status = 0;
 
 Coroutine::set([
-    'log_level'   => SWOOLE_LOG_INFO,
+    'log_level'   => SWOOLE_LOG_DEBUG,
     'trace_flags' => 0
 ]);
 \Swoft\Co::run(function () {

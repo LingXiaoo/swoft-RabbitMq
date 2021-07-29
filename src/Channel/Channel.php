@@ -3,7 +3,8 @@
 namespace Lingxiao\Swoft\RabbitMq\Channel;
 
 use Lingxiao\Swoft\RabbitMq\Connection\Connection;
-use Lingxiao\Swoft\RabbitMq\Consumer\MqConsumer;
+use Lingxiao\Swoft\RabbitMq\Consumer\Consumer;
+use Lingxiao\Swoft\RabbitMq\Consumer\ConsumerHandle;
 use Lingxiao\Swoft\RabbitMq\Exception\RabbitException;
 use Lingxiao\Swoft\RabbitMq\Pool;
 use Lingxiao\Swoft\RabbitMq\Producer\MqProducer;
@@ -148,8 +149,10 @@ class Channel
     public function consumer(){
         $this->initChannel();
         $conf = $this->getQueueConf();
-        $consumerClass = $conf['consumerClass'] ?? MqConsumer::class;
-        $consumer = BeanFactory::getBean($consumerClass);
+        $consumerHandleClass = $conf['consumerHandle'] ?? ConsumerHandle::class;
+        $consumerHandle = BeanFactory::getBean($consumerHandleClass);
+        $consumer = BeanFactory::getBean(Consumer::class);
+        $consumer->setConsumerHandle($consumerHandle);
         $consumer->setAmqChannel($this->channel);
         $consumer->setRabbit($this);
         return $consumer;
