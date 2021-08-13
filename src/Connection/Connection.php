@@ -70,7 +70,6 @@ class Connection extends AbstractConnection implements ConnectionInterface
     }
 
     /**
-     * Run a command against the Redis database. Auto retry once
      *
      * @param string $method
      * @param array  $parameters
@@ -82,24 +81,12 @@ class Connection extends AbstractConnection implements ConnectionInterface
     public function command(string $method, array $parameters = [], bool $reconnect = false)
     {
         try {
-            // if (!in_array($lowerMethod, $this->supportedMethods, true)) {
-            // Up: use method_exists check command is valid.
+
             if (false === method_exists($this->client, $method)) {
                 throw new RabbitException(sprintf('Redis method(%s) is not supported!', $method));
             }
-
-            // Before event
-//            Swoft::trigger(RedisEvent::BEFORE_COMMAND, null, $method, $parameters);
-
-//            Log::profileStart('redis.%s', $method);
             $result = $this->client->{$method}(...$parameters);
-//            Log::profileEnd('redis.%s', $method);
 
-            // After event
-//            Swoft::trigger(RedisEvent::AFTER_COMMAND, null, $method, $parameters, $result);
-
-            // Release Connection
-//            $this->release();
         } catch (\Throwable $e) {
             if (!$reconnect && $this->reconnect()) {
                 return $this->command($method, $parameters, true);
