@@ -37,18 +37,18 @@ class Consumer extends BaseConsumer implements ConsumerInterface
             }
 
             if ($result === Result::ACK) {
-                Log::error('Rabbitmq Consumer ACK Message '.$deliveryTag);
+                Log::info('Rabbitmq Consumer ACK Message '.$deliveryTag);
                 return $channel->basic_ack($deliveryTag);
             }
             if ($result === Result::NACK) {
-                Log::error('Rabbitmq Consumer NACK Message '.$deliveryTag);
+                Log::info('Rabbitmq Consumer NACK Message '.$deliveryTag);
                 return $channel->basic_nack($deliveryTag);
             }
             if ($result === Result::REQUEUE) {
-                Log::error('Rabbitmq Consumer Requeue Message '.$deliveryTag);
+                Log::info('Rabbitmq Consumer Requeue Message '.$deliveryTag);
                 return $channel->basic_reject($deliveryTag, true);
             }
-            Log::error('Rabbitmq Consumer Drop Message '.$deliveryTag);
+            Log::info('Rabbitmq Consumer Drop Message '.$deliveryTag);
             return $channel->basic_reject($deliveryTag, false);
         });
         while($this->AmqChannel->is_consuming()){
