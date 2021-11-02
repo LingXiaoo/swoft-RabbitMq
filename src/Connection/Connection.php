@@ -98,9 +98,14 @@ class Connection extends AbstractConnection implements ConnectionInterface
         return $result;
     }
 
-    public function reconnect(): bool
+    public function reconnect() :bool
     {
-        $this->create();
+        try {
+            $this->create();
+        } catch (\Throwable $e) {
+            return false;
+        }
+        return true;
     }
 
     /**
