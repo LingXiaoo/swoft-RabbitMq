@@ -36,7 +36,6 @@ class MqProducer extends BaseProducer implements ProducerInterface
         try {
             foreach ($this->message as $msg){
                 //触发事件
-                var_dump($msg->getBody());
                 Log::info('Rabbitmq Producer publish Message',[$msg]);
                 $this->AmqChannel->basic_publish($msg,$this->rabbit->getExchangeName(),$this->rabbit->getRouteKey());
                 //触发事件
