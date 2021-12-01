@@ -33,6 +33,10 @@ class BaseProducer
         $this->AmqChannel = $AmqChannel;
     }
 
+    public function clearMessage(){
+        $this->message = [];
+    }
+
     /**
      * @param mixed $rabbit
      */

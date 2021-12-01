@@ -14,6 +14,6 @@ Interface ProducerInterface
      * @param mixed $data
      */
     public function setMessage($data,array $properties = []);
-
+    public function clearMessage();
     public function push();
 }

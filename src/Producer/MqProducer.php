@@ -41,12 +41,15 @@ class MqProducer extends BaseProducer implements ProducerInterface
                 //触发事件
             }
             //清空当前对象关闭通道
+            $this->clearMessage();
             $this->rabbit->close();
         }catch (\Throwable $exception){
             Log::error('Rabbitmq Producer error',[$exception->getMessage(),$exception->getFile(),$exception->getLine()]);
             //清空当前对象关闭通道
+            $this->clearMessage();
             $this->rabbit->close();
         } finally {
+            $this->clearMessage();
             $this->rabbit->close();
         }
     }
